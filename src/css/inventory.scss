@@ -1,0 +1,105 @@
+body {
+  background: #131827;
+}
+
+nav {
+  background: #242938;
+}
+
+.container {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+table {
+  background: #242938;
+  border-radius: 8px;
+  width: 1136px;
+  margin: 0 auto;
+  padding: 24px 0;
+  border-spacing: 0 8px;
+
+  th {
+    text-align: right;
+  }
+
+  tr {
+    position: relative;
+    height: 60px;
+  }
+
+  tr:last-child {
+    margin-bottom: 0;
+  }
+
+  tr::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 1072px;
+    background-color: #131827;
+    position: absolute;
+    bottom: -1px;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  td {
+    vertical-align: middle;
+  }
+
+  #image {
+    width: 96px;
+  }
+
+  #name {
+    text-align: left;
+    width: 288px;
+  }
+
+  #count {
+    width: 144px;
+  }
+
+  #init-price, #current-price, #i-profit {
+    width: 160px;
+  }
+
+  tbody {
+    .item {
+      td {
+        text-align: right;
+      }
+
+      #item-name {
+        text-align: left;
+      }
+
+      #item-img {
+        text-align: left;
+        padding-left: 32px;
+
+        img {
+          width: 48px;
+        }
+      }
+
+      #profit, #loss {
+        padding-right: 32px;
+      }
+    }
+
+    .item:hover {
+      background: #2E3342;
+    }
+  }
+}
+
+#profit {
+  color: #5CA938;
+}
+
+#loss {
+  color: #D2574F;
+}

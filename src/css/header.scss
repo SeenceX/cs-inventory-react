@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+header {
+  display: flex;
+  justify-content: center;
+  height: 88px;
+  width: 100%;
+  margin-bottom: 56px;
+
+
+  nav {
+    display: flex;
+    align-items: center;
+    width: inherit;
+    justify-content: inherit;
+
+
+    .nav-container {
+      display: inherit;
+      justify-content: space-between;
+      width: inherit;
+      max-width: 1280px;
+      padding: 32px 76px;
+
+      .nav-items {
+        display: flex;
+
+        .brand {
+          text-decoration: none;
+          color: #FFFFFF;
+          font-weight: 600;
+          font-size: 18px;
+          line-height: 24px;
+          letter-spacing: 0.02em;
+          margin-right: 32px;
+
+          i {
+            font-style: normal;
+            color: #DC7237;
+          }
+        }
+
+        .nav-ul {
+          display: inherit;
+          align-items: center;
+          align-content: center;
+
+          .nav-li {
+            list-style: none;
+            margin-right: 24px;
+
+            .nav-link {
+              text-decoration: none;
+              font-weight: 300;
+              font-size: 16px;
+              line-height: 24px;
+              letter-spacing: 0.02em;
+              color: #FFFFFF;
+              transition: 0.3s;
+              opacity: 70%;
+
+              &:hover {
+                opacity: 100%;
+              }
+            }
+
+            .active {
+              opacity: 100%;
+            }
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+
+      .nav-controllers {
+        display: flex;
+        align-items: center;
+
+        .currency{
+          background: none;
+          outline: none;
+          border: none;
+          color: #FFFFFF;
+          font-size: 16px;
+          margin-right: 24px;
+          optgroup{
+            background: #1F1F1F;
+            color: inherit;
+            text-align: center;
+            border: none;
+            option{
+              text-align: center;
+              border: none;
+            }
+          }
+        }
+
+        .login {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          text-align: center;
+          letter-spacing: 0.02em;
+          text-decoration: none;
+          transition: 0.3s;
+          color: #FFFFFF;
+          &:hover{
+            opacity: 70%;
+          }
+        }
+      }
+    }
+  }
+
+}
