@@ -6,7 +6,7 @@ class InventoryPage extends React.Component{
     render() {
         return(
             <div className="container">
-                <InventoryTable getItemProfit={this.props.getItemProfit} Items={this.props.Items}/>
+                <InventoryTable getItemProfit={this.props.getItemProfit} Inventory={this.props.Inventory}/>
             </div>
         )
     }
