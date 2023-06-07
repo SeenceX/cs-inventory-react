@@ -1,7 +1,7 @@
 /*import './App.css';*/
 import React from "react";
 import Header from "./components/Header";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom"
 import HomePage from "./components/HomePage";
 import NotFound from "./components/NotFound";
 import InventoryPage from "./components/InventoryPage";
@@ -12,43 +12,69 @@ import LoginPage from "./components/LoginPage";
 class App extends React.Component {
 
     baseUrl = 'https://localhost:7070/api/'
+
     constructor(props) {
         super(props);
 
         this.state = {
-            User:{
-                userId: 0,
-                userLogin: "SeenceX",
-                userInventoryId: 0,
-            },
+            User: JSON.parse(localStorage.getItem("user")) || {},
             Inventory: [],
+            isAuth: false
         }
         this.isLoginned = this.isLoginned.bind(this);
         this.getItemProfit = this.getItemProfit.bind(this);
         this.LoadInventory = this.LoadInventory.bind(this)
-        //this.LoadInventory(1);
+        this.Login = this.Login.bind(this);
+        this.Exit = this.Exit.bind(this);
+
+
+
     }
+
     componentDidMount() {
-        //this.getAllUsers();
+        this.isLoginned()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const prevUser = prevState.User;
+        const currentUser = this.state.User;
+
+        if (!prevUser && currentUser) {
+            // если User был сброшен в null и теперь имеет значение, устанавливаем его из localStorage
+            localStorage.setItem("user", JSON.stringify(currentUser));
+        }
     }
 
     render() {
         return (
-            <Router>
-                <Header isLoginned={this.isLoginned} User={this.state.User}/>
-                <Routes>
-                    <Route path="*" element={<NotFound/>}/>
-                    <Route exact path="/" element={<HomePage/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/inventory" element={<InventoryPage getItemProfit={this.getItemProfit} LoadInventory={this.LoadInventory} Inventory={this.state.Inventory}/>}/>
-                </Routes>
-            </Router>
-        )
+            <div>
+                <Router>
+                    <Header isAuth={this.state.isAuth} User={this.state.User} onExit={this.Exit}/>
+                    <Routes>
+                        <Route exact path="/" element={<HomePage/>}/>
+                        <Route path="/login" element={<LoginPage isAuth={this.state.isAuth} onLogin={this.Login}
+                                                                 isLoginned={this.isLoginned}/>}/>
+                        <Route path="/inventory"
+                               element={<InventoryPage
+                                   isAuth={this.state.isAuth}
+                                   getItemProfit={this.getItemProfit}
+                                   LoadInventory={this.LoadInventory}
+                                   Inventory={this.state.Inventory}
+                                   UserId={this.state.User.Id}
+                               />}
+                        />
+                        <Route path="*" element={<NotFound/>}/>
+                    </Routes>
+
+                </Router>
+            </div>
+        );
     }
 
-    async LoadInventory(userId){
+    async LoadInventory(userId) {
+        if (this.state.isAuth === false)
+            return null
         try {
-            console.log(1);
             const res = await axios.get(this.baseUrl + 'Inventory/' + userId);
             const userInventory = res.data.map(item => ({
                 itemId: item.itemid,
@@ -62,7 +88,7 @@ class App extends React.Component {
                 itemType: item.itemType,
                 itemCollection: item.itemCollection
             }));
-            this.setState({ Inventory: userInventory });
+            this.setState({Inventory: userInventory});
         } catch (error) {
             console.log(error);
             // обработка ошибки
@@ -70,8 +96,12 @@ class App extends React.Component {
 
     }
 
-    isLoginned(){
-        return this.state.User ? true : false
+    isLoginned() {
+        if (!this.state.User.Id) {
+            this.setState({isAuth: false})
+        } else {
+            this.setState({isAuth: true})
+        }
     }
 
     getItemProfit(key) {
@@ -83,10 +113,10 @@ class App extends React.Component {
         return `${profit}`
     }
 
-    getAllUsers(){
-        axios.get(this.baseUrl+"Users/").then(res =>{
+    getAllUsers() {
+        axios.get(this.baseUrl + "Users/").then(res => {
             var users = [];
-            res.data.forEach(item=>{
+            res.data.forEach(item => {
                 users.push({
                     Id: item.id,
                     Login: item.login,
@@ -95,6 +125,42 @@ class App extends React.Component {
             });
             console.log(users);
         })
+    }
+
+    //используя стрелочную функцию для определения метода Login, которая автоматически привязывает this к текущему экземпляру компонента.
+    Login(user_) {
+        var loginRequest = {
+            login: user_.login,
+            password: user_.password
+        }
+        axios.post(this.baseUrl + "Users/login", loginRequest).then(res => {
+            if (res.data) {
+                var user = {
+                    Id: res.data.id,
+                    Login: res.data.login,
+                };
+                localStorage.setItem("user", JSON.stringify(user));
+
+                this.setState({
+                    User: user
+                }, () => {
+                    this.isLoginned();
+                    console.log(this.state.isAuth);
+                });
+            } else {
+                alert("Неверный логин или пароль!")
+            }
+
+        })
+
+        console.log(this.state.isAuth)
+    }
+
+    Exit(){
+        localStorage.removeItem("user")
+        this.setState({User: {}}, () => this.setState({
+            User: {}
+        }))
     }
 }
 

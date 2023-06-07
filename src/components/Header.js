@@ -1,24 +1,28 @@
 import React from "react";
-import {Link, NavLink, useLocation} from "react-router-dom";
+import {Link, Navigate, NavLink, useLocation} from "react-router-dom";
 import "../css/header.css"
 
-function Header({isLoginned, User}){
+function Header({isAuth, onExit, User}) {
 
     const location = useLocation();
     const hideUrls = location.pathname === '/login' || location.pathname === '/registration'
-    if (hideUrls){
+    if (hideUrls) {
         return null;
     }
-    return(
+
+    return (
         <header>
             <nav>
                 <div className="nav-container">
                     <div className="nav-items">
                         <Link to="/" className="brand">CS<i>Inventory</i></Link>
                         <ul className="nav-ul">
-                            <li className="nav-li"><NavLink to="/" className="nav-link" activeclassname="active">Главная</NavLink></li>
-                            <li className="nav-li"><NavLink to="/inventory" className="nav-link" activeclassname="active">Инвентарь</NavLink></li>
-                            <li className="nav-li"><NavLink to="/library" className="nav-link" activeclassname="active">Библиотека</NavLink></li>
+                            <li className="nav-li"><NavLink to="/" className="nav-link"
+                                                            activeclassname="active">Главная</NavLink></li>
+                            <li className="nav-li"><NavLink to="/inventory" className="nav-link"
+                                                            activeclassname="active">Инвентарь</NavLink></li>
+                            <li className="nav-li"><NavLink to="/library" className="nav-link"
+                                                            activeclassname="active">Библиотека</NavLink></li>
                         </ul>
                     </div>
                     <div className="nav-controllers">
@@ -28,8 +32,11 @@ function Header({isLoginned, User}){
                                 <option value="usd">$ UDS</option>
                             </optgroup>
                         </select>
-                        <Link to="/login" className="login nav-link">Войти</Link>
-                        {isLoginned && <span>{User.userLogin}</span>}
+                        {isAuth ?
+                            <div>
+                                <span>{User.Login}</span>
+                                <button onClick={() => {onExit(); window.location.reload()}} type={"submit"}>Выйти</button>
+                            </div>:<Link to="/login" className="login nav-link">Войти</Link>}
                         <span>{}</span>
                     </div>
                 </div>
