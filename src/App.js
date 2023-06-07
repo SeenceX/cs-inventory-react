@@ -7,6 +7,7 @@ import NotFound from "./components/NotFound";
 import InventoryPage from "./components/InventoryPage";
 import "./css/style.css"
 import axios from "axios";
+import LoginPage from "./components/LoginPage";
 
 class App extends React.Component {
 
@@ -20,7 +21,7 @@ class App extends React.Component {
                 userLogin: "SeenceX",
                 userInventoryId: 0,
             },
-            Inventory: []
+            Inventory: [],
         }
         this.isLoginned = this.isLoginned.bind(this);
         this.getItemProfit = this.getItemProfit.bind(this);
@@ -28,7 +29,7 @@ class App extends React.Component {
         //this.LoadInventory(1);
     }
     componentDidMount() {
-        this.getAllUsers();
+        //this.getAllUsers();
     }
 
     render() {
@@ -38,6 +39,7 @@ class App extends React.Component {
                 <Routes>
                     <Route path="*" element={<NotFound/>}/>
                     <Route exact path="/" element={<HomePage/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/inventory" element={<InventoryPage getItemProfit={this.getItemProfit} LoadInventory={this.LoadInventory} Inventory={this.state.Inventory}/>}/>
                 </Routes>
             </Router>
