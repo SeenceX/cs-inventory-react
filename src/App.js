@@ -102,8 +102,8 @@ class App extends React.Component {
             userId: userId,
             itemId: itemId
         }
-        console.log("del:", deleteItemRequest)
-        console.log(this.baseUrl + "Inventory/delete")
+        //console.log("del:", deleteItemRequest)
+        //console.log(this.baseUrl + "Inventory/delete")
         axios.post(this.baseUrl + "Inventory/delete", deleteItemRequest).then(res => {
             if (res.data) {
                 alert("Предмет удален!")
@@ -125,11 +125,11 @@ class App extends React.Component {
                 alert("Не удалось добавить предмет.")
             }
         })
-        console.log(this.state)
+        //console.log(this.state)
     }
 
     async findItem(itemName) {
-        console.log(this.state)
+        //console.log(this.state)
         try {
             const res = await axios.get(this.baseUrl + "Inventory/" + itemName);
             const items = res.data.map(item => ({
@@ -141,10 +141,10 @@ class App extends React.Component {
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 // Обрабатываем ошибку 404
-                console.log("Item not found", error);
+                //console.log("Item not found", error);
                 return [];
             } else {
-                console.error(error);
+                //console.error(error);
                 throw error;
             }
         }
@@ -159,7 +159,7 @@ class App extends React.Component {
             itemImg: item.itemImg,
             itemName: item.itemName,
         }))
-        console.log(items, 1);
+        //console.log(items, 1);
         return items;
     }
 
@@ -215,7 +215,7 @@ class App extends React.Component {
                     Password: item.password
                 })
             });
-            console.log(users);
+            //console.log(users);
         })
     }
 
@@ -237,7 +237,7 @@ class App extends React.Component {
                     User: user
                 }, () => {
                     this.isLoginned();
-                    console.log(this.state.isAuth);
+                    //console.log(this.state.isAuth);
                 });
             } else {
                 alert("Неверный логин или пароль!")
@@ -245,7 +245,7 @@ class App extends React.Component {
 
         })
 
-        console.log(this.state.isAuth)
+        //console.log(this.state.isAuth)
     }
 
     Registration(user_) {
@@ -255,7 +255,7 @@ class App extends React.Component {
         }
 
         axios.post(this.baseUrl + "Users/registration", registrationRequest).then(res => {
-            if (!res.data) {
+            if (res.data) {
                 alert("Регистрация успешна!")
             } else {
                 alert("Ну удалось зарегистрироваться.")

@@ -13,6 +13,7 @@ class InventoryPage extends React.Component {
     }
 
     handleInitPriceChange(event) {
+        console.log(this.state.initPrice)
         this.setState({initPrice: event.target.value});
         this.props.updateItem(this.props.userId, this.props.userItem.itemId, this.state.initPrice)
     }
@@ -30,7 +31,7 @@ class InventoryPage extends React.Component {
                     <input
                         type={"text"}
                         value={this.props.userItem.itemInitPrice}
-                        onClick={this.handleInitPriceChange}
+                        onChange={this.handleInitPriceChange}
                     />
                 </td>
                 <td id="current-price">{this.props.userItem.itemCurrentPrice}</td>
