@@ -26,12 +26,7 @@ function Header({isAuth, onExit, User}) {
                         </ul>
                     </div>
                     <div className="nav-controllers">
-                        <select name="" id="" className="currency">
-                            <optgroup label='Валюта'>
-                                <option value="rub">₽ РУБ.</option>
-                                <option value="usd">$ UDS</option>
-                            </optgroup>
-                        </select>
+
                         {isAuth ?
                             <div>
                                 <span>{User.Login}</span>

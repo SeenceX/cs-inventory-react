@@ -32,40 +32,35 @@ class InventoryPage extends React.Component {
                 </div>
             )
         }
-        if (this.props.Inventory.length === 0) {
-            return (
-                <div className="container">
-                    <button type={"button"} onClick={()=>{
-                        if (this.state.selectedItem !== null) {
-                            this.props.addItem(this.state.selectedItem.itemId);
-                        }
-                    }}
-                    >Добавить предмет</button>
-                    <input type={"text"}
-                           onChange={async (data) => {
-                               console.log(data.target.value)
-                               this.setState({searchText: data.target.value})
-                               const items = await this.props.findItem(data.target.value);
-                               console.log(items);
-                               this.setState({items: items})
-                               console.log(this.state)
-                           }}
-                           value={this.state.selectedItem ? this.state.selectedItem.itemName : this.state.searchText}
-                    />
-                    <ul>
-                        {this.state.items&&this.state.items.length>0&&this.state.items.map(item=>(
-                            <li key={item.itemId} onClick={() => this.handleItemClick(item)}>
-                                <img alt={"img"} src={item.itemImg} />
-                                {item.itemName}
-                            </li>
-                        ))}{}
-                    </ul>
-                </div>
-            )
-        }
+
         return (
             <div className="container">
-                <InventoryTable getItemProfit={this.props.getItemProfit} Inventory={this.props.Inventory}/>
+                <button type={"button"} onClick={()=>{
+                    if (this.state.selectedItem !== null) {
+                        this.props.addItem( this.props.UserId, this.state.selectedItem.itemId);
+                    }
+                }}
+                >Добавить предмет</button>
+                <input type={"text"}
+                       onChange={async (data) => {
+                           console.log(data.target.value)
+                           this.setState({searchText: data.target.value})
+                           const items = await this.props.findItem(data.target.value);
+                           console.log(items);
+                           this.setState({items: items})
+                           console.log(this.state)
+                       }}
+                       value={this.state.selectedItem ? this.state.selectedItem.itemName : this.state.searchText}
+                />
+                <ul>
+                    {this.state.items&&this.state.items.length>0&&this.state.items.map(item=>(
+                        <li key={item.itemId} onClick={() => this.handleItemClick(item)}>
+                            <img alt={"img"} src={item.itemImg} />
+                            {item.itemName}
+                        </li>
+                    ))}{}
+                </ul>
+                <InventoryTable userId={this.props.UserId} deleteItem={this.props.deleteItem} getItemProfit={this.props.getItemProfit} Inventory={this.props.Inventory}/>
             </div>
         )
     }

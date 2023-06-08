@@ -32,6 +32,7 @@ class App extends React.Component {
         this.findItem = this.findItem.bind(this);
         this.getAllItems = this.getAllItems.bind(this);
         this.addUserInventoryItem = this.addUserInventoryItem.bind(this);
+        this.deleteUserInventoryItem = this.deleteUserInventoryItem.bind(this);
 
 
     }
@@ -69,6 +70,7 @@ class App extends React.Component {
                                    UserId={this.state.User.Id}
                                    findItem={this.findItem}
                                    addItem={this.addUserInventoryItem}
+                                   deleteItem={this.deleteUserInventoryItem}
                                />}
                         />
                         <Route path="/library" element={<LibraryPage allItems={this.getAllItems}/>}/>
@@ -80,11 +82,39 @@ class App extends React.Component {
         );
     }
 
-    addUserInventoryItem(userId, ItemId){
-
+    updateUserInventoryItem(userId, itemId, price){}
+    deleteUserInventoryItem(userId, itemId){
+        var deleteItemRequest ={
+            userId: userId,
+            itemId: itemId
+        }
+        console.log("del:", deleteItemRequest)
+        console.log(this.baseUrl+"Inventory/delete")
+        axios.post(this.baseUrl+"Inventory/delete", deleteItemRequest).then(res=>{
+            if (res.data) {
+                alert("Предмет удален!")
+            } else {
+                alert("Не удалось удалить предмет.")
+            }
+        })
+    }
+    addUserInventoryItem(userId, itemId){
+        var addItemRequest = {
+            userId: userId,
+            itemId: itemId
+        }
+        axios.post(this.baseUrl+"Inventory/add", addItemRequest).then(res=>{
+            if (res.data) {
+                alert("Предмет добавлен!")
+            } else {
+                alert("Не удалось добавить предмет.")
+            }
+        })
+        console.log(this.state)
     }
 
     async findItem(itemName) {
+        console.log(this.state)
         try {
             const res = await axios.get(this.baseUrl + "Inventory/" + itemName);
             const items = res.data.map(item => ({
@@ -125,7 +155,7 @@ class App extends React.Component {
         try {
             const res = await axios.get(this.baseUrl + 'Inventory/' + userId);
             const userInventory = res.data.map(item => ({
-                itemId: item.itemid,
+                itemId: item.itemId,
                 itemImg: item.itemImg,
                 itemName: item.itemName,
                 itemCount: item.itemCount,
@@ -211,9 +241,9 @@ class App extends React.Component {
 
         axios.post(this.baseUrl + "Users/registration", registrationRequest).then(res => {
             if (!res.data) {
-                alert("Регистрация не удалась")
-            } else {
                 alert("Регистрация успешна!")
+            } else {
+                alert("Ну удалось зарегистрироваться.")
             }
         });
     }
