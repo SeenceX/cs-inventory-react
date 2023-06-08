@@ -60,7 +60,12 @@ class InventoryPage extends React.Component {
                         </li>
                     ))}{}
                 </ul>
-                <InventoryTable userId={this.props.UserId} deleteItem={this.props.deleteItem} getItemProfit={this.props.getItemProfit} Inventory={this.props.Inventory}/>
+                <InventoryTable
+                    userId={this.props.UserId}
+                    deleteItem={this.props.deleteItem}
+                    updateItem={this.props.updateItem}
+                    getItemProfit={this.props.getItemProfit}
+                    Inventory={this.props.Inventory}/>
             </div>
         )
     }

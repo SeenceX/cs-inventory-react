@@ -6,6 +6,10 @@ nav {
   background: #242938;
 }
 
+input{
+  color: #1F1F1F;
+}
+
 .container {
   width: 1280px;
   margin: 0 auto;

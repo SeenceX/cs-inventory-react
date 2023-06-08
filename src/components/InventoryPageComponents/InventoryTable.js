@@ -16,7 +16,17 @@ class InventoryPage extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {this.props.Inventory.map((item, index) => <InventoryItem key={index} id={index} userId={this.props.userId} deleteItem={this.props.deleteItem} getItemProfit={this.props.getItemProfit} userItem={item}/>)}
+                {this.props.Inventory
+                    .map((item, index) =>
+                        <InventoryItem
+                            key={index}
+                            id={index}
+                            userId={this.props.userId}
+                            deleteItem={this.props.deleteItem}
+                            getItemProfit={this.props.getItemProfit}
+                            userItem={item}
+                            updateItem={this.props.updateItem}
+                        />)}
                 </tbody>
             </table>
         )

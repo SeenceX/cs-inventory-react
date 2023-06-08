@@ -33,6 +33,7 @@ class App extends React.Component {
         this.getAllItems = this.getAllItems.bind(this);
         this.addUserInventoryItem = this.addUserInventoryItem.bind(this);
         this.deleteUserInventoryItem = this.deleteUserInventoryItem.bind(this);
+        this.updateUserInventoryItem = this.updateUserInventoryItem.bind(this);
 
 
     }
@@ -71,6 +72,7 @@ class App extends React.Component {
                                    findItem={this.findItem}
                                    addItem={this.addUserInventoryItem}
                                    deleteItem={this.deleteUserInventoryItem}
+                                   updateItem={this.updateUserInventoryItem}
                                />}
                         />
                         <Route path="/library" element={<LibraryPage allItems={this.getAllItems}/>}/>
@@ -82,15 +84,27 @@ class App extends React.Component {
         );
     }
 
-    updateUserInventoryItem(userId, itemId, price){}
-    deleteUserInventoryItem(userId, itemId){
-        var deleteItemRequest ={
+    updateUserInventoryItem(userId, itemId, price) {
+        var updateItemRequest = {
+            userId: userId,
+            itemId: itemId
+        }
+        axios.post(this.baseUrl + "Inventory/change", updateItemRequest, {params: {itemPrice: price}}).then(response => {
+            // обработка успешного ответа
+        })
+            .catch(error => {
+                // обработка ошибки
+            });
+    }
+
+    deleteUserInventoryItem(userId, itemId) {
+        var deleteItemRequest = {
             userId: userId,
             itemId: itemId
         }
         console.log("del:", deleteItemRequest)
-        console.log(this.baseUrl+"Inventory/delete")
-        axios.post(this.baseUrl+"Inventory/delete", deleteItemRequest).then(res=>{
+        console.log(this.baseUrl + "Inventory/delete")
+        axios.post(this.baseUrl + "Inventory/delete", deleteItemRequest).then(res => {
             if (res.data) {
                 alert("Предмет удален!")
             } else {
@@ -98,12 +112,13 @@ class App extends React.Component {
             }
         })
     }
-    addUserInventoryItem(userId, itemId){
+
+    addUserInventoryItem(userId, itemId) {
         var addItemRequest = {
             userId: userId,
             itemId: itemId
         }
-        axios.post(this.baseUrl+"Inventory/add", addItemRequest).then(res=>{
+        axios.post(this.baseUrl + "Inventory/add", addItemRequest).then(res => {
             if (res.data) {
                 alert("Предмет добавлен!")
             } else {
@@ -136,10 +151,10 @@ class App extends React.Component {
     }
 
 
-    async getAllItems(){
+    async getAllItems() {
         const url = this.baseUrl + "Inventory/AllItems"
-        const result =  await axios.get(url);
-        const items = result.data.map(item =>({
+        const result = await axios.get(url);
+        const items = result.data.map(item => ({
             itemId: item.itemId,
             itemImg: item.itemImg,
             itemName: item.itemName,
