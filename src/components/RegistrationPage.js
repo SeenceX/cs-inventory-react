@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import '../css/authorization.css'
-import {Navigate, NavLink} from 'react-router-dom';
+import {NavLink} from "react-router-dom";
 
-class LoginPage extends Component {
+class RegistrationPage extends Component {
 
     User = {}
 
@@ -16,13 +15,10 @@ class LoginPage extends Component {
     }
 
     render() {
-        if (this.props.isAuth) {
-            return <Navigate to="/inventory" />;
-        }
         return (
             <div className="container">
                 <form ref={el => this.LoginForm = el} className={"loginForm"}>
-                    <h1>Вход</h1>
+                    <h1>Регистрация</h1>
                     <div className="login">
                         <label htmlFor="login">Логин</label>
                         <input onChange={data => this.setState({login: data.target.value})} name={"login"} id={"login"}
@@ -40,18 +36,18 @@ class LoginPage extends Component {
                             password: this.state.password
                         }
                         console.log(this.User)
-                        this.props.onLogin(this.User)
+                        this.props.onRegistration(this.User)
                         this.User = {}
                         console.log(this.User)
                         this.LoginForm.reset();
                     }}
-                            id={"button"}>Войти
+                            id={"button"}>Зарегистрироваться
                     </button>
                 </form>
-                <NavLink to={"/registration"}>Зарегистрироваться</NavLink>
+                <NavLink to={"/login"}>Уже есть аккаунт?</NavLink>
             </div>
         );
     }
 }
 
-export default LoginPage;
+export default RegistrationPage;

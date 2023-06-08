@@ -1,13 +1,15 @@
 /*import './App.css';*/
 import React from "react";
 import Header from "./components/Header";
-import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom"
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import HomePage from "./components/HomePage";
 import NotFound from "./components/NotFound";
 import InventoryPage from "./components/InventoryPage";
 import "./css/style.css"
 import axios from "axios";
 import LoginPage from "./components/LoginPage";
+import RegistrationPage from "./components/RegistrationPage";
+import LibraryPage from "./components/LibraryPage";
 
 class App extends React.Component {
 
@@ -25,8 +27,10 @@ class App extends React.Component {
         this.getItemProfit = this.getItemProfit.bind(this);
         this.LoadInventory = this.LoadInventory.bind(this)
         this.Login = this.Login.bind(this);
+        this.Registration = this.Registration.bind(this);
         this.Exit = this.Exit.bind(this);
-
+        this.findItem = this.findItem.bind(this);
+        this.getAllItems = this.getAllItems.bind(this);
 
 
     }
@@ -54,6 +58,7 @@ class App extends React.Component {
                         <Route exact path="/" element={<HomePage/>}/>
                         <Route path="/login" element={<LoginPage isAuth={this.state.isAuth} onLogin={this.Login}
                                                                  isLoginned={this.isLoginned}/>}/>
+                        <Route path="/registration" element={<RegistrationPage onRegistration={this.Registration}/>}/>
                         <Route path="/inventory"
                                element={<InventoryPage
                                    isAuth={this.state.isAuth}
@@ -61,8 +66,10 @@ class App extends React.Component {
                                    LoadInventory={this.LoadInventory}
                                    Inventory={this.state.Inventory}
                                    UserId={this.state.User.Id}
+                                   findItem={this.findItem}
                                />}
                         />
+                        <Route path="/library" element={<LibraryPage allItems={this.getAllItems}/>}/>
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
 
@@ -71,6 +78,44 @@ class App extends React.Component {
         );
     }
 
+
+    async findItem(itemName) {
+        try {
+            const res = await axios.get(this.baseUrl + "Inventory/" + itemName);
+            const items = res.data.map(item => ({
+                itemId: item.itemId,
+                itemImg: item.itemImg,
+                itemName: item.itemName,
+            }));
+            return items;
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                // Обрабатываем ошибку 404
+                console.log("Item not found", error);
+                return [];
+            } else {
+                console.error(error);
+                throw error;
+            }
+        }
+    }
+
+
+    async getAllItems(){
+        const url = this.baseUrl + "Inventory/AllItems"
+        const result =  await axios.get(url);
+        const items = result.data.map(item =>({
+            itemId: item.itemId,
+            itemImg: item.itemImg,
+            itemName: item.itemName,
+        }))
+        console.log(items, 1);
+        return items;
+    }
+
+    addUserInventoryItem(userId, ItemId){
+
+    }
     async LoadInventory(userId) {
         if (this.state.isAuth === false)
             return null
@@ -93,7 +138,6 @@ class App extends React.Component {
             console.log(error);
             // обработка ошибки
         }
-
     }
 
     isLoginned() {
@@ -156,7 +200,22 @@ class App extends React.Component {
         console.log(this.state.isAuth)
     }
 
-    Exit(){
+    Registration(user_) {
+        var registrationRequest = {
+            login: user_.login,
+            password: user_.password
+        }
+
+        axios.post(this.baseUrl + "Users/registration", registrationRequest).then(res => {
+            if (!res.data) {
+                alert("Регистрация не удалась")
+            } else {
+                alert("Регистрация успешна!")
+            }
+        });
+    }
+
+    Exit() {
         localStorage.removeItem("user")
         this.setState({User: {}}, () => this.setState({
             User: {}
