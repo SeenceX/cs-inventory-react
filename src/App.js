@@ -31,6 +31,7 @@ class App extends React.Component {
         this.Exit = this.Exit.bind(this);
         this.findItem = this.findItem.bind(this);
         this.getAllItems = this.getAllItems.bind(this);
+        this.addUserInventoryItem = this.addUserInventoryItem.bind(this);
 
 
     }
@@ -67,6 +68,7 @@ class App extends React.Component {
                                    Inventory={this.state.Inventory}
                                    UserId={this.state.User.Id}
                                    findItem={this.findItem}
+                                   addItem={this.addUserInventoryItem}
                                />}
                         />
                         <Route path="/library" element={<LibraryPage allItems={this.getAllItems}/>}/>
@@ -78,6 +80,9 @@ class App extends React.Component {
         );
     }
 
+    addUserInventoryItem(userId, ItemId){
+
+    }
 
     async findItem(itemName) {
         try {
@@ -113,9 +118,7 @@ class App extends React.Component {
         return items;
     }
 
-    addUserInventoryItem(userId, ItemId){
 
-    }
     async LoadInventory(userId) {
         if (this.state.isAuth === false)
             return null

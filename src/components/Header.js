@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, Navigate, NavLink, useLocation} from "react-router-dom";
+import {Link, NavLink, useLocation} from "react-router-dom";
 import "../css/header.css"
 
 function Header({isAuth, onExit, User}) {

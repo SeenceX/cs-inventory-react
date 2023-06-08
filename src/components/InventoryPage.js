@@ -35,7 +35,12 @@ class InventoryPage extends React.Component {
         if (this.props.Inventory.length === 0) {
             return (
                 <div className="container">
-                    <button type={"button"}>Добавить предмет</button>
+                    <button type={"button"} onClick={()=>{
+                        if (this.state.selectedItem !== null) {
+                            this.props.addItem(this.state.selectedItem.itemId);
+                        }
+                    }}
+                    >Добавить предмет</button>
                     <input type={"text"}
                            onChange={async (data) => {
                                console.log(data.target.value)

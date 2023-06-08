@@ -11,20 +11,11 @@ class HomePage extends React.Component {
                         <p>Отслеживайте изменение цен на предметы в Counter-Strike<br/>и управляйте своим инвентарем
                             максимально эффективно.</p>
                     </div>
-                    {/*<div class="imgs">
-                        <img id="elipse" src="../assets/img/gr-elipse.svg" alt="">
-                        <img id="guns" src="../assets/img/guns.svg" alt="">
-                    </div>*/}
-
-                    <form action="" className="url-form">
-                        <input type="text" name="steam-url" className="url-input" id="" placeholder="Steam URL"/>
-                        <input type="button" className="load-input" value="Загрузить инвентарь"/>
-                    </form>
                 </div>
 
                 <div className="info">
                     <div className="steps">
-                        <div className="step">Загружай свой инвентарь<br/>и узанай его рыночную стоимость</div>
+                        <div className="step">Выбирай предмет,<br/>и узанай его рыночную стоимость</div>
                         <div className="step">Следи за динамикой изменения<br/> стоимости своих предметов</div>
                         <div className="step">Получай максимальную<br/> выгоду от продажи</div>
                     </div>
